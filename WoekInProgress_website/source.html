@@ -1,1 +1,252 @@
 
+<!DOCTYPE html> 
+<html lang="en">
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOURCE</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+    <style>
+    /* Custom CSS for changing the font of the main title */
+    .navbar-brand { 
+      
+      font-family: 'Neucha', cursive; /* Replace 'Your Chosen Font' with the desired font name */
+      /* You can also adjust other styles here, like font-size, font-weight, etc. */
+    } 
+
+        /* Add styles for moving content down */
+        body {
+            margin-top: 80px; 
+            margin-bottom: 20px; /* Adjust the margin-bottom for additional space at the bottom */
+            
+        }
+
+        /* Add other styles for your content */
+        #contact-section {
+            padding: 20px;
+        }
+
+       /* Adjust the margin-top for more space above "GLEAMM API" and "WorkInProgress" */
+        footer {
+            margin-top: 40px; 
+        }
+
+        
+        
+  </style>
+</head>
+
+  
+<body>
+   <!-- navigation bar -->
+    <nav class="navbar navbar-expand-lg bg-success navbar-dark py-3 fixed-top">
+        <div class="container-sm">
+            <a href="index.html" class="navbar-brand">WorkInProgress</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">HOME</a>
+
+                      </li>
+
+                     <li class="nav-item">
+                        <a href="about.html" class="nav-link">ABOUT</a>
+                        
+                    
+                     
+
+                    </li>
+                    
+                  
+
+                     <li class="nav-item">
+                        <a href="plan.html" class="nav-link">SCHEDULE</a>
+                     
+                        
+                
+
+
+                    </li>
+                  
+                    <li class="nav-item">
+                        <a href="interview.html" class="nav-link">INTERVIEW</a>
+                        
+                    
+                     
+
+                    </li>
+                    <li class="nav-item">
+                
+                <a href="source.html" class="nav-link">SOURCE</a>
+                    </li>
+
+
+                    
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">CONTACT</a>
+                   
+                     
+                    
+            
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+     <p class="card-text">
+          <p></p>
+    <br>
+         
+ <div class="ms-4 text-right">
+
+<section id="contact-section" class="card-text">
+        <p></p>
+          
+        
+      <br>
+    <h1 class="text-left">UML diagrams</h1>
+
+    <br>
+    (1) Load Management Use Case:<br>
+    There are two functionalities for the workload management use case. <br>
+    The team member will be able to view visualizations (data visualization) of the power consumption/power output along with functionality to throttle up or down the cluster operations (load management, power schedule, and power on/off). 
+    <br>
+    The call data functionality would be the API to call the data from the GLEAMM facility. 
+    <br><br>
+
+    (2) Stress-ng Use Case: <br>
+    The Stress-ng use case is fairly straight forward.
+    <br> A user wants to stress test one of three things, the memory, I/O systems, or the CPU load. 
+    <br>
+    The I/O systems and load extend the test CPU functionality.
+
+    <br><br>
+
+    (3) Load Management Class:<br>
+    The main system controller class is the central component that manages and instantiates other objects to implement various functions.
+    <br>
+    When a user accesses the web application and logs in, the API is initialized, and it creates a call object to store API data. 
+    <br>The controller, upon receiving API calls, instantiates solarVsTime, commercialUsage, and clusterUsage objects, which generate visual elements for the UI.
+    <br>These objects are derived from the Visualization class, which stores graph data from the call object. 
+    <br>Additionally, the controller initializes the management class, which, in turn, creates a schedule object to manage data and user-defined cluster throttle times. 
+    <br>Finally, the UI includes a logout feature to allow users to log out of the system.
+        <br><br>
+
+    (4) Stress-ng Class:<br>
+    The controller will the the main class in this system. 
+    <br>When someone accesses the web-application, the controller instantiates a userInterface object which will take input from the user to indicate what the user would like to do.
+    <br>If the user selects test CPU, and testCPU object is instantiated by the controller. 
+    <br>If the user selects test memory, the controller instantiates a testMemory object, and so on.
+    <br>The results of these tests will be sent back as output through the controller to the UI.
+<br><br>
+
+    (5) Load Management Sequence:<br>
+
+    
+    <br><br>
+
+    (6) Stress-ng Sequence:<br>
+    
+    <br><br>
+    <h1 class="text-left">UI Prototype</h1>
+   
+    <br>
+      The first thing the users sees will be the log-in page. 
+    <br>It will require the users to sign in with their own e-Raider authentication information.
+    <br>If they need an assistance with logging in, the assistance contact will take the users to the IT-help central homepage. 
+          
+<br><br>
+Our home page will be the main dashboard of the web application. 
+    <br>The users will be able to switch the pages by clicking the buttons on the left side of the page. 
+    <br>The main dashboard will also show the users a graph of the power output of renewable energy VS the power consumption of the cluster over time. 
+    <br>By showing this graph on the main page, the users will be able to see what is going with the cluster usage and stress-test the cluster or manage the workload of the cluster if necessary.
+
+<br><br>
+The Stress-ng page will contain all functions regarding the stress-testing of the cluster. 
+    <br>The three functions we pick for this project are “I/O test”, “CPU workload test”, and “memory test”.
+    <br>By clicking each button, they will be able to see the test result of the each test.
+
+<br><br>
+Workload Managemenet page will be for the workload management of the cluster. 
+    <br>The user will be able to see a graph of the power output of renewable energy VS the power consumption of the cluster over time. 
+    <br>The user will also be able to adjust the cluster power usage by the slider function on the left side of the page. 
+
+    
+<br>
+    
+<br>
+  
+<br> 
+
+ <style>
+        /* Custom CSS for changing the font of the main title */
+        .navbar-brand { 
+            font-family: 'Neucha', cursive;
+        }
+
+        /* Add styles for moving content down */
+        body {
+            margin-top: 80px; 
+            margin-bottom: 20px;
+            font-family: 'Your New Font', sans-serif; /* Replace 'Your New Font' with the desired font name */
+        }
+
+        /* Add other styles for your content */
+        #contact-section {
+            padding: 20px;
+        }
+
+        /* Adjust the margin-top for more space above "GLEAMM API" and "WorkInProgress" */
+        footer {
+            margin-top: 40px; 
+        }
+
+        /* Example of modifying the text in the content section */
+        .card-text {
+            font-size: 18px; /* Adjust the font size */
+            color: #333; /* Adjust the color if needed */
+            line-height: 1.5; /* Adjust the line height for better readability */
+            font-family: 'Your New Font', sans-serif; /* Use the same font family as specified for the body */
+        }
+    </style>
+    
+    </section>
+
+    <!-- footer -->
+    <footer class="py-3 my-2">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item">
+                <a href="#home" class="nav-link px-2 text-muted">GLEAMM API</a>
+            </li>
+        
+            
+        </ul>
+        <p class="text-center text-muted">WorkInProgress</p>
+       
+    </footer>
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
