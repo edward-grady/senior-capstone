@@ -1,4 +1,3 @@
-
 <!DOCTYPE html> 
 <html lang="en">
 <head> 
@@ -163,11 +162,22 @@
 <br><br>
 
     (5) Load Management Sequence:<br>
-
+    The system involves one actor, the GLEAMM User, and four key objects: User Interface (UI), Visualization, Proxy (API), and Management. 
+    <br>The GLEAMM User interacts with the system via the UI, which presents data graphs, power levels, and scheduling options. 
+    <br>The UI displays default graphs upon login and facilitates user input. 
+    <br>Visualization is responsible for creating and displaying graphs. 
+    <br>The Proxy (API) connects the GLEAMM facility clusters to the web UI, enabling remote data retrieval. 
+    <br>Management empowers users to monitor power usage, availability, and schedule power usage rates.
     
     <br><br>
 
     (6) Stress-ng Sequence:<br>
+    The user initiates the system by logging in and received a success message via the user interface. 
+    <br>The user then decided if they want to test the CPU, memory, or I/O of the GLEAMM cluster. 
+    <br>Based on the user’s input, the controller will initiate calls through the API to test one of those 3 stress-ng calls. 
+    <br>When completed, the cluster will return the results of the test to the controller through the API. 
+    <br>The controller will then send the results to the UI for the user to view. 
+    <br>These stress-ng options remain until the user logs off. 
     
     <br><br>
     <h1 class="text-left">UI Prototype</h1>
