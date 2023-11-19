@@ -23,13 +23,13 @@ def home_page():
 #stress-ng page websitename.com/stress_ng
 @app.route("/stress_ng")
 def stress_ng_page():
-  return render_template('index.html')
+  return render_template('stress_ng.html')
 
 
 #load management page websitename.com/load_management
 @app.route("/load_management")
 def load_management_page():
-  return "load-management"
+  return render_template('load_management.html')
 
 
 #run app
