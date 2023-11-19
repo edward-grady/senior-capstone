@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <title>GLEAMM</title>
+    <title>GLEAMM Stress_ng</title>
     <style>
       .center{
         display: block;
@@ -20,12 +20,15 @@
         font-family: Arial, Helvetica, sans-serif;
         font: size; 70px;
         margin-top: 30px;
+        margin-bottom: 40px;
       }
       h2 {
         color: #196F3D;
         text-align: center;
         font-family: ArialHelveticasans-serif;
         font-size: 50px;
+        margin-top: 30px;
+        margin-bottom: 40px;
       }
       .btn-group button {
         background-color: #04AA6D; /* Green background */
@@ -33,18 +36,24 @@
         color: white; /* White text */
         padding: 10px 24px; /* Some padding */
         cursor: pointer; /* Pointer/hand icon */
-        width: 50%; /* Set a width if needed */
-        isplay: block; /* Make the buttons appear below each other */
+        width: 240px; /* Set a width if needed */
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        
+      
       }
 
       .btn-group button:not(:last-child) {
         border-bottom: none; /* Prevent double borders */
+        
       }
 
       /* Add a background color on hover */
       .btn-group button:hover {
         background-color: #3e8e41;
       }
+      
       .graph{
         display: block;
         margin-left: auto;
@@ -52,24 +61,28 @@
         margin-top: 40px;
         width: 50%; height: 250px;
       }
-
-
+      
+      
     </style>
 
   </head>
   <body class="container" style="background-color: #AED6F1">
     <img src="https://www.depts.ttu.edu/gleamm/images/GLEAMM_2C_full.png" class="center">
-    <h1>STRESS_NG TESTING</h1>
+    <h1>STRESS_NG</h1>
+    
+    
+    <div class="btn-group">
+      
+        <a href='/'><button>HOME</button></a>
+        <a href='stress_ng'><button>STRESS_NG</button>
+        <a href='load_management'><button>LOAD MANAGEMENT</button></a>
+      
+    </div>
+    
     <h2>DASHBOARD</h2>
-    <div class="row">
-      <div class="btn-group" role="group" aria-label="Vertical button group">
-          <button>Home</button>
-          <button>Stress_ng</button>
-          <button>Load Management</button>        
-      </div>
-      <div class="graph">
-        <img src="https://media.istockphoto.com/id/1347345879/photo/financial-rising-graph-and-chart-with-lines-and-numbers.jpg?s=612x612&w=is&k=20&c=AOTdlA8y3Y-cqiuYx3KXNkokIkwdlCw6d123LLth-IE=">
-      </div>
-  </div>
+    <div class="graph">
+      <img src="https://media.istockphoto.com/id/1347345879/photo/financial-rising-graph-and-chart-with-lines-and-numbers.jpg?s=612x612&w=is&k=20&c=AOTdlA8y3Y-cqiuYx3KXNkokIkwdlCw6d123LLth-IE=">
+    </div>
+  
   </body>
 </html>
