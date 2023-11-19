@@ -9,7 +9,7 @@
 '''
 
 #import flask, only place flask import needed
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -17,13 +17,13 @@ app = Flask(__name__)
 #home page
 @app.route("/")
 def home_page():
-  return "This is the landing page for senior capstone"
+  return render_template('home.html')
 
 
 #stress-ng page websitename.com/stress_ng
 @app.route("/stress_ng")
 def stress_ng_page():
-  return "stress_ng"
+  return render_template('index.html')
 
 
 #load management page websitename.com/load_management
