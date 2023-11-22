@@ -6,6 +6,7 @@
 
     if running on local machine, follow instructions in this webpage:
     https://flask.palletsprojects.com/en/3.0.x/installation/#python-version
+    need to set up virtual environment on local machine
 '''
 
 #import flask, only place flask import needed
