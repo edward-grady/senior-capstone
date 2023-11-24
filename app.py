@@ -10,13 +10,38 @@
 '''
 
 #import flask, only place flask import needed
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
 
+app.secret_key = "SecretKey"
+
+
+#login page
+@app.route('/', methods=['GET', 'POST'])
+def login():
+  if request.method == 'POST':
+    username = request.form['username']
+    password = request.form['password']
+    if username == 'admin' and password == 'admin':
+      session['logged_in'] = True
+      return redirect(url_for('home_page'))
+    else:
+      return render_template('login.html',
+                             error='Invalid username or password')
+  else:
+    return render_template('login.html')
+
+
+#logout
+@app.route('/logout')
+def logout():
+  session.pop('username', None)
+  return redirect(url_for('login'))
+
 
 #home page
-@app.route("/")
+@app.route("/home")
 def home_page():
   return render_template('home.html')
 
