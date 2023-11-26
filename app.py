@@ -121,6 +121,17 @@ def output():
     formatted_output = format_output(output_data)
     return render_template('output.html', output=formatted_output)
 
-# Run the app
+
+
+#load management page websitename.com/load_management
+@app.route("/load_management")
+def load_management_page():
+  return render_template('load_management.html')
+
+
+
+
+#run app
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
