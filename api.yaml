@@ -1,0 +1,72 @@
+openapi: 3.0.3
+info:
+  title: Stress Testing API
+  description: API for stressing CPU and memory resources
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+paths:
+  /:
+    get:
+      summary: Get the home page of the application
+      responses:
+        "200":
+          description: Successful response
+
+  /stress_cpu:
+    get:
+      summary: Run CPU stress test
+      parameters:
+        - name: cpu_workers
+          in: query
+          description: Number of CPU workers for the stress test
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: stress_time
+          in: query
+          description: Time in seconds to run the stress test
+          required: false
+          schema:
+            type: integer
+            default: 60
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output:
+                    type: string
+
+  /stress_memory:
+    get:
+      summary: Run memory stress test
+      parameters:
+        - name: memory_workers
+          in: query
+          description: Number of memory workers for the stress test
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: stress_time
+          in: query
+          description: Time in seconds to run the stress test
+          required: false
+          schema:
+            type: integer
+            default: 60
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output:
+                    type: string
