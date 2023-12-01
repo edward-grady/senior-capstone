@@ -1,77 +1,36 @@
 openapi: 3.0.3
 info:
-  title: Stress-ng Test API
-  description: API for running stress-ng tests
+  title: Stress Testing API
+  description: API for stressing CPU and memory resources
   version: 1.0.0
 servers:
   - url: http://localhost:5000
 paths:
-  /login:
-    post:
-      summary: Login to the application
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-      responses:
-        "302":
-          description: Redirect on successful login
-        "200":
-          description: Invalid username or password
-          content:
-            text/html:
-              schema:
-                type: string
-  /logout:
-    get:
-      summary: Logout from the application
-      responses:
-        "302":
-          description: Redirect to the login page
-
-  /home:
+  /:
     get:
       summary: Get the home page of the application
       responses:
         "200":
           description: Successful response
-          content:
-            text/html:
-              schema:
-                type: string
 
-  /stress_ng:
+  /stress_cpu:
     get:
-      summary: Get the stress-ng page
-      responses:
-        "200":
-          description: Successful response
-          content:
-            text/html:
-              schema:
-                type: string
-
-  /local_stress_test/stress_cpu:
-    post:
-      summary: Run CPU stress test locally
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                cpu_workers:
-                  type: integer
-                  default: 1
-                stress_time:
-                  type: integer
-                  default: 60
+      summary: Run CPU stress test
+      parameters:
+        - name: cpu_workers
+          in: query
+          description: Number of CPU workers for the stress test
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: stress_time
+          in: query
+          description: Time in seconds to run the stress test
+          required: false
+          schema:
+            type: integer
+            default: 60
       responses:
         "200":
           description: Successful response
@@ -83,170 +42,31 @@ paths:
                   output:
                     type: string
 
-  /local_stress_test/stress_memory:
-    post:
-      summary: Run memory stress test locally
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                memory_workers:
-                  type: integer
-                  default: 1
-                stress_time:
-                  type: integer
-                  default: 60
-                vm_bytes:
-                  type: string
-                  default: '512M'
-                vm_stressors:
-                  type: integer
-                  default: 1
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  output:
-                    type: string
-
-  /local_stress_test/stress_io:
-    post:
-      summary: Run I/O stress test locally
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                io_workers:
-                  type: integer
-                  default: 1
-                stress_time:
-                  type: integer
-                  default: 60
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  output:
-                    type: string
-
-  /remote_server_stress-test/re_stress_cpu:
-    post:
-      summary: Run CPU stress test on a remote server
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-                remote_server_name:
-                  type: string
-                remote_cpu_workers:
-                  type: integer
-                  default: 1
-                remote_stresstime:
-                  type: integer
-                  default: 60
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  output:
-                    type: string
-
-  /remote_server_stress-test/re_stress_memory:
-    post:
-      summary: Run memory stress test on a remote server
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-                remote_server_name:
-                  type: string
-                memory_workers:
-                  type: integer
-                  default: 1
-                remote_stresstime:
-                  type: integer
-                  default: 60
-                remote_vmbytes:
-                  type: string
-                  default: '512M'
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  output:
-                    type: string
-
-  /remote_server_stress-test/re_stress_io:
-    post:
-      summary: Run I/O stress test on a remote server
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-                remote_server_name:
-                  type: string
-                remote_ioworkers:
-                  type: integer
-                  default: 1
-                remote_stresstime:
-                  type: integer
-                  default: 60
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  output:
-                    type: string
-
-  /swagger:
+  /stress_memory:
     get:
-      summary: Get the Swagger UI page
+      summary: Run memory stress test
+      parameters:
+        - name: memory_workers
+          in: query
+          description: Number of memory workers for the stress test
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: stress_time
+          in: query
+          description: Time in seconds to run the stress test
+          required: false
+          schema:
+            type: integer
+            default: 60
       responses:
         "200":
           description: Successful response
           content:
-            text/html:
+            application/json:
               schema:
-                type: string
+                type: object
+                properties:
+                  output:
+                    type: string
