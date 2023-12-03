@@ -1,6 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_restx import Api, Resource, reqparse, fields
 import subprocess
+import logging
+import schedule
+import time
+import pandas as pd
+from threading import Thread
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 api = Api(app, doc='/swagger', title='Stress-ng Test API',
@@ -8,6 +14,58 @@ api = Api(app, doc='/swagger', title='Stress-ng Test API',
 local_stress_test_namespace = api.namespace('local_stress_test', description='Local Stress Tests')
 stress_ng_test_namespace = api.namespace('remote_server_stress-test', description='Remote Stress Tests')
 app.secret_key = "SecretKey"
+
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Variable to store the scheduled percentage and time
+scheduled_percentage = 50
+scheduled_time = None
+
+def set_cpu_percentage(percentage):
+    try:
+        # Update process_name to the actual process name
+        subprocess.run(['sudo', 'cpulimit', '-l', str(percentage), '-e', 'process_name'])
+        logger.info(f'CPU usage set to {percentage}%')
+    except Exception as e:
+        logger.error(f'Error setting CPU usage: {str(e)}')
+
+def scheduled_job():
+    global scheduled_percentage
+    set_cpu_percentage(scheduled_percentage)
+
+# Schedule the job to run every minute
+schedule.every(1).minutes.do(scheduled_job)
+
+def schedule_runner():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+# Start the schedule runner in a separate thread
+schedule_thread = Thread(target=schedule_runner)
+schedule_thread.start()
+
+def schedule_cpu_at_time(percentage, time_str):
+    global scheduled_percentage, scheduled_time
+
+    try:
+        scheduled_percentage = percentage
+        scheduled_time = datetime.strptime(time_str, '%H:%M').time()
+
+        now = datetime.now().time()
+        time_difference = datetime.combine(datetime.today(), scheduled_time) - datetime.combine(datetime.today(), now)
+
+        # If the scheduled time is in the future, schedule the job
+        if time_difference.total_seconds() > 0:
+            schedule.every().day.at(time_str).do(scheduled_job)
+            return True, None
+        else:
+            return False, 'Scheduled time should be in the future'
+    except ValueError:
+        return False, 'Invalid time format'
 
 
 # Login page
@@ -103,9 +161,9 @@ class StressCpuResource(Resource):
             return {'error': f"Error: {e.output.decode('utf-8')}"}, 500
 
 
-  @api.expect(common_parser)
-  @api.marshal_with(output_model)
-  def post(self):
+@api.expect(common_parser)
+@api.marshal_with(output_model)
+def post(self):
     args = common_parser.parse_args()
     cpu_workers = args['io_workers']
     stress_time = args['stress_time']
@@ -149,9 +207,9 @@ class StressMemoryResource(Resource):
             return {'error': f"Error: {e.output.decode('utf-8')}"}, 500
 
 
-  @api.expect(common_parser)
-  @api.marshal_with(output_model)
-  def post(self):
+@api.expect(common_parser)
+@api.marshal_with(output_model)
+def post(self):
     args = common_parser.parse_args()
     memory_workers = args['memory_workers']
     stress_time = args['stress_time']
@@ -283,9 +341,9 @@ def run_remote_command(command):
         return None, f"Error: {e.output.decode('utf-8')}"
 
 
-  @api.expect(common_parser)
-  @api.marshal_with(output_model)
-  def post(self):
+@api.expect(common_parser)
+@api.marshal_with(output_model)
+def post(self):
     args = common_parser.parse_args()
     io_workers = args['io_workers']
     stress_time = args['stress_time']
@@ -330,6 +388,68 @@ def output():
 @app.route("/load_management")
 def load_management_page():
   return render_template('load_management.html')
+
+@app.route('/set-cpu-usage', methods=['POST'])
+def set_cpu_usage():
+    percentage = int(request.json.get('percentage', 50))
+
+    if 0 <= percentage <= 100:
+        set_cpu_percentage(percentage)
+        return jsonify({'success': True, 'message': f'Immediate CPU usage set to {percentage}%'})
+    else:
+        return jsonify({'error': 'Invalid percentage value'}), 400
+
+@app.route('/schedule-cpu-usage', methods=['POST'])
+def schedule_cpu_usage():
+    percentage = int(request.json.get('percentage', 50))
+    time_str = request.json.get('time', '')
+
+    success, message = schedule_cpu_at_time(percentage, time_str)
+
+    if success:
+        return jsonify({'success': True, 'message': f'Scheduled CPU usage set to {percentage}% at {time_str}'})
+    else:
+        return jsonify({'error': message}), 400
+    
+@app.route('/get-cpu-data')
+def get_cpu_data():
+    # Read data from CSV file
+    df = pd.read_csv('cpu_data.csv')
+
+    # Return data in JSON format
+    data = {
+        'labels': df['Timestamp'].tolist(),  # Assuming 'Timestamp' is a column in your CSV
+        'data': df['CPU Usage'].tolist(),    # Assuming 'CPU Usage' is a column in your CSV
+    }
+
+    return jsonify(data)
+
+
+@app.route('/get-solar-energy-data')
+def get_solor_energy_data():
+    # Read data from CSV file
+    dfl = pd.read_csv('solar_energy_data.csv')
+
+    # Return data in JSON format
+    data= {
+        'labels': dfl['time'].tolist(),  # Assuming 'Time' is a column in your CSV
+        'data': dfl['generation_solar'].tolist(),    # Assuming 'solar' is a column in your CSV
+    }
+
+    return jsonify(data)
+
+@app.route('/get-wind-energy-data')
+def get_wind_energy_data():
+    # Read data from CSV file
+    df2 = pd.read_csv('wind_energy_data.csv')
+
+    # Return data in JSON format
+    data= {
+        'labels': df2['time'].tolist(),  # Assuming 'Time' is a column in your CSV
+        'data': df2['generation_wind'].tolist(),    # Assuming 'solar' is a column in your CSV
+    }
+
+    return jsonify(data)
 
 
 #run app
