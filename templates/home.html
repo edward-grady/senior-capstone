@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <title>GLEAMM</title>
@@ -80,9 +81,114 @@
     </div>
     
     <h2>DASHBOARD</h2>
-    <div class="graph">
-      <img src="https://media.istockphoto.com/id/1347345879/photo/financial-rising-graph-and-chart-with-lines-and-numbers.jpg?s=612x612&w=is&k=20&c=AOTdlA8y3Y-cqiuYx3KXNkokIkwdlCw6d123LLth-IE=">
-    </div>
-  
+
+    <div class="chart-container">
+      <div>
+          <canvas id="solarChart" width="200" height="100"></canvas>
+      </div>
+      <div>
+          <canvas id="windChart" width="200" height="100"></canvas>
+      </div>
+  </div>
+    <script>
+        // Function to fetch data from the server
+        function fetchData1() {
+            fetch('/get-solar-energy-data')
+                .then(response => response.json())
+                .then(data => {
+                    // Call function to update the chart with new data
+                    updateChart1(data.labels, data.data);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+        // Function to update the Chart.js chart
+        function updateChart1(labels, data) {
+            var ctx1 = document.getElementById('solarChart').getContext('2d');
+            var myChart1 = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Solar Generation',
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(192, 192, 192, 0.5)',
+                        fill: true,
+                        lineTension: 0.4,
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'linear',
+                            position: 'bottom'
+                        }]
+                    }
+                }
+            });
+        }
+
+        // Fetch data initially and set an interval for periodic updates
+        fetchData1();
+           // Command to continously update and fetch data, can be activated once live connection is made
+        //setInterval(fetchData1, 60000);  // Update every minute
+
+
+        // Function to fetch data from the server
+        function fetchData() {
+            fetch('/get-wind-energy-data')
+                .then(response => response.json())
+                .then(data => {
+                    // Call function to update the chart with new data
+                    updateChart(data.labels, data.data);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Function to update the Chart.js chart
+        function updateChart(labels, data) {
+            var ctx = document.getElementById('windChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Wind Generation',
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(192, 192, 192, 0.5)',
+                        fill: true,
+                        lineTension: 0.4,
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'linear',
+                            position: 'bottom'
+                        }]
+                    }
+                }
+            });
+        }
+
+        // Fetch data initially and set an interval for periodic updates
+        fetchData();
+           // Command to continously update and fetch data, can be activated once live connection is made
+        //setInterval(fetchData, 60000);  // Update every minute
+      </script>
+<style>
+  .chart-container {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .chart-container div {
+      margin-bottom: 20px; /* Adjust margin as needed to separate the charts */
+  }
+</style>
+
   </body>
 </html>
